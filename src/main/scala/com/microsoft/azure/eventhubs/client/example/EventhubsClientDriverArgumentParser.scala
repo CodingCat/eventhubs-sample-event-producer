@@ -26,6 +26,8 @@ object ClientArgumentKeys extends Enumeration {
   val MessageCount: String = "messageCount"
   val ThreadCount: String = "threadCount"
   val PartitionID: String = "partitionID"
+  val executionModel: String = "executionModel"
+  val connectionString: String = "connectionString"
 }
 
 object ClientArgumentParser {
@@ -71,6 +73,10 @@ object ClientArgumentParser {
         parseArguments(argumentMap ++ Map(Symbol(ClientArgumentKeys.ThreadCount) -> value.toInt), tail)
       case "--partition-id" :: value :: tail =>
         parseArguments(argumentMap ++ Map(Symbol(ClientArgumentKeys.PartitionID) -> value.toInt), tail)
+      case "--connection-string" :: value :: tail =>
+        parseArguments(argumentMap ++ Map(Symbol(ClientArgumentKeys.connectionString) -> value.toString), tail)
+      case "--execution-mode" :: value :: tail =>
+        parseArguments(argumentMap ++ Map(Symbol(ClientArgumentKeys.executionModel) -> value.toString), tail)
       case option :: tail =>
         println()
         println("Unknown option: " + option)
@@ -81,12 +87,14 @@ object ClientArgumentParser {
   }
 
   def verifyArguments(argumentMap : ArgumentMap): Unit = {
-
-    assert(argumentMap.contains(Symbol(ClientArgumentKeys.EventhubsNamespace)))
-    assert(argumentMap.contains(Symbol(ClientArgumentKeys.EventhubsName)))
-    assert(argumentMap.contains(Symbol(ClientArgumentKeys.PolicyName)))
-    assert(argumentMap.contains(Symbol(ClientArgumentKeys.PolicyKey)))
-    assert(argumentMap.contains(Symbol(ClientArgumentKeys.MessageLength)))
-    assert(argumentMap(Symbol(ClientArgumentKeys.MessageLength)).asInstanceOf[Int] > 0)
+    /*
+    if (argumentMap(Symbol("--execution-mode")).asInstanceOf[String] == "sync") {
+      assert(argumentMap.contains(Symbol(ClientArgumentKeys.EventhubsNamespace)))
+      assert(argumentMap.contains(Symbol(ClientArgumentKeys.EventhubsName)))
+      assert(argumentMap.contains(Symbol(ClientArgumentKeys.PolicyName)))
+      assert(argumentMap.contains(Symbol(ClientArgumentKeys.PolicyKey)))
+      assert(argumentMap.contains(Symbol(ClientArgumentKeys.MessageLength)))
+      assert(argumentMap(Symbol(ClientArgumentKeys.MessageLength)).asInstanceOf[Int] > 0)
+    }*/
   }
 }

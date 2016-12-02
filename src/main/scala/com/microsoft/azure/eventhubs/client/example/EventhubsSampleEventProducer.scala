@@ -21,6 +21,9 @@ import java.util.Calendar
 
 import com.microsoft.azure.eventhubs.{EventData, EventHubClient}
 import com.microsoft.azure.servicebus.ConnectionStringBuilder
+
+import scala.collection.mutable.ListBuffer
+import scala.collection.JavaConversions._
 //import org.json4s._
 //import org.json4s.jackson.Serialization._
 
@@ -39,52 +42,36 @@ class EventhubsSampleEventProducer(
                                     val partitionId: String) {
 
   def GenerateEvents(): Long = {
-
     val connectionString: ConnectionStringBuilder = new ConnectionStringBuilder(eventHubsNamespace, eventHubsName,
       policyName, policyKey)
-
+    println(s"CONNECTION STRING: $connectionString")
     val eventHubsClient: EventHubClient = EventHubClient.createFromConnectionString(connectionString.toString).get
-
     val randomGenerator: Random = new Random()
-
     var currentEventCount: Long = 0
     var currentEventIndex: Long = eventStartIndex
-
     val threadId = Thread.currentThread().getId
-
+    val buffer = new java.util.LinkedList[EventData]
     while(true) {
-
       val currentTime = Calendar.getInstance().getTime
-
       try {
-
-        //val eventPayload: EventPayload = EventPayload(randomGenerator.alphanumeric.take(eventLength).mkString)
-
-        //implicit val formats = DefaultFormats
-
-        val eventPayload: String = randomGenerator.alphanumeric.take(eventLength).mkString
-
-        val eventData: EventData = new EventData(eventPayload.getBytes())
-
-        eventHubsClient.sendSync(eventData)
-
+        val eventPayload = Array.fill(500)('a').mkString
+        val eventData = new EventData(eventPayload.getBytes())
+        buffer += eventData
         currentEventCount += 1
-
-        if(currentEventCount % 1024 == 0) {
-
+        if(currentEventCount % 100 == 0) {
+          eventHubsClient.sendSync(buffer)
+          buffer.clear()
           currentEventIndex = currentEventCount + eventStartIndex
-
           println(s"$threadId > $currentTime > $currentEventCount > $currentEventIndex > Sending event: $eventPayload")
         }
-
         if (eventCount > 0 && currentEventCount >= eventCount) return currentEventCount
-      }
-      catch {
-
+      } catch {
         case e: Exception => println(s"$currentEventIndex > $currentTime > Exception: $e")
       }
     }
-
+    if (!buffer.isEmpty) {
+      eventHubsClient.sendSync(buffer)
+    }
     currentEventCount
   }
 }
