@@ -19,10 +19,10 @@ class SimpleProducer (val policyName: String,
 
   def run(): Unit = {
     import scala.collection.JavaConverters._
+    val buffer = new ListBuffer[EventData]
     for (i <- 0 until sendCount) {
       val eventPayLoad = Array.fill(eventLength)('a').mkString
       val eventData = new EventData(eventPayLoad.getBytes)
-      val buffer = new ListBuffer[EventData]
       buffer += eventData
       if (i % 1000 == 0) {
         eventHubsClient.sendSync(buffer.asJava)
