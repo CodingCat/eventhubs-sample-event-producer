@@ -24,7 +24,7 @@ class SimpleProducer (val policyName: String,
       val eventPayLoad = Array.fill(eventLength)('a').mkString
       val eventData = new EventData(eventPayLoad.getBytes)
       buffer += eventData
-      if (i % 1000 == 0) {
+      if (i % 10 == 0) {
         eventHubsClient.sendSync(buffer.asJava)
         buffer.clear()
       }
