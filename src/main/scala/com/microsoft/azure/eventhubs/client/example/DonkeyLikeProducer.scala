@@ -8,11 +8,11 @@ object DonkeyLikeProducer {
     val policyKey = args(1)
     val eventHubNamespace = args(2)
     val eventHubName = args(3)
-    val partition = args(4)
+    val sendCount = args(4).toInt
     val eventLength = args(5).toInt
 
     val producer = new SimpleProducer(policyName, policyKey, eventHubNamespace, eventHubName,
-      eventLength, "0")
+      eventLength, sendCount)
     producer.run()
   }
 }

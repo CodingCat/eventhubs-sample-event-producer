@@ -8,7 +8,7 @@ class SimpleProducer (val policyName: String,
                        val eventHubsNamespace: String,
                        val eventHubsName: String,
                        val eventLength: Int,
-                       val partitionId: String) {
+                       val sendCount: Int) {
 
   val connectionString: ConnectionStringBuilder = new ConnectionStringBuilder(eventHubsNamespace, eventHubsName,
     policyName, policyKey)
@@ -16,9 +16,10 @@ class SimpleProducer (val policyName: String,
   val eventHubsClient: EventHubClient = EventHubClient.createFromConnectionString(connectionString.toString).get
 
   def run(): Unit = {
-    val eventPayLoad = Array.fill(eventLength)('a').mkString
-    println(eventPayLoad.getBytes.length)
-    val eventData = new EventData(eventPayLoad.getBytes)
-    eventHubsClient.sendSync(eventData)
+    for (i <- 0 until sendCount) {
+      val eventPayLoad = Array.fill(eventLength)('a').mkString
+      val eventData = new EventData(eventPayLoad.getBytes)
+      eventHubsClient.sendSync(eventData)
+    }
   }
 }
