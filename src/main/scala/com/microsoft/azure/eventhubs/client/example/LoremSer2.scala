@@ -29,7 +29,7 @@ object LoremSer2 {
       val fileIn = new FileInputStream(eventDataLength.toString)
       val objectInputStream = new ObjectInputStream(fileIn)
       val data = objectInputStream.readObject().asInstanceOf[EventData]
-      println(new String(data.getBody))
+      println(new String(data.getBody, "UTF-8"))
       objectInputStream.close()
       fileIn.close()
     }
