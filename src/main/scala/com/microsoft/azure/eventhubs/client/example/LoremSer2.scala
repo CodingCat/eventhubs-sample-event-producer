@@ -12,6 +12,11 @@ object LoremSer2 {
     val eventData3 = new EventData(Array.fill[Byte](1029 * 3)('a'))
     val eventData4 = new EventData(Array.fill[Byte](1029 * 100)('a'))
 
+    println(eventData1.getBodyOffset)
+    println(eventData2.getBodyOffset)
+    println(eventData3.getBodyOffset)
+    println(eventData4.getBodyOffset)
+
     for (eventData <- List(eventData1, eventData2, eventData3, eventData4)) {
       val fileOut = new FileOutputStream(s"${eventData.getBodyLength}")
       val out = new ObjectOutputStream(fileOut)
