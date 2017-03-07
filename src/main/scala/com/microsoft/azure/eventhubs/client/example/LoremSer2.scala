@@ -7,10 +7,10 @@ import com.microsoft.azure.eventhubs.EventData
 object LoremSer2 {
 
   def main(args: Array[String]): Unit = {
-    val eventData1 = new EventData(Array.fill(1029)[Byte]('a'))
-    val eventData2 = new EventData(Array.fill(1029 * 2)[Byte]('a'))
-    val eventData3 = new EventData(Array.fill(1029 * 3)[Byte]('a'))
-    val eventData4 = new EventData(Array.fill(1029 * 100)[Byte]('a'))
+    val eventData1 = new EventData(Array.fill[Byte](1029)('a'))
+    val eventData2 = new EventData(Array.fill[Byte](1029 * 2)('a'))
+    val eventData3 = new EventData(Array.fill[Byte](1029 * 3)('a'))
+    val eventData4 = new EventData(Array.fill[Byte](1029 * 100)('a'))
 
     for (eventData <- List(eventData1, eventData2, eventData3, eventData4)) {
       val fileOut = new FileOutputStream(s"${eventData.getBodyLength}")
