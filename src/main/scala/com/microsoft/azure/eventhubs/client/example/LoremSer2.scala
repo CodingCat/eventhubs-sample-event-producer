@@ -17,6 +17,11 @@ object LoremSer2 {
     println(eventData3.getBodyOffset)
     println(eventData4.getBodyOffset)
 
+    println(eventData1.getBodyLength)
+    println(eventData2.getBodyLength)
+    println(eventData3.getBodyLength)
+    println(eventData4.getBodyLength)
+
     for (eventData <- List(eventData1, eventData2, eventData3, eventData4)) {
       val fileOut = new FileOutputStream(s"${eventData.getBodyLength}")
       val out = new ObjectOutputStream(fileOut)
