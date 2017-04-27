@@ -24,7 +24,7 @@ class StructuredDataProducer(
   def run(): Unit = {
     import scala.collection.JavaConverters._
     val buffer = new ListBuffer[EventData]
-    for (i <- 0 until sendCount) {
+    for (i <- 1 to sendCount) {
       val eventPayLoad = Array.fill(eventLength)('a').mkString
       val eventData = new EventData(eventPayLoad.getBytes)
       eventData.getProperties.put("creationTime", creationTime.toString)
@@ -54,5 +54,6 @@ object StructuredDataProducer {
     val producer = new StructuredDataProducer(policyName, policyKey, eventHubNamespace, eventHubName,
       creationTime, eventLength, sendCount)
     producer.run()
+    println("finished sending")
   }
 }
