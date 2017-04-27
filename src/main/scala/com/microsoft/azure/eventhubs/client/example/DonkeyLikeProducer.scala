@@ -2,7 +2,6 @@ package com.microsoft.azure.eventhubs.client.example
 
 object DonkeyLikeProducer {
 
-
   def main(args: Array[String]): Unit = {
     val policyName = args(0)
     val policyKey = args(1)
