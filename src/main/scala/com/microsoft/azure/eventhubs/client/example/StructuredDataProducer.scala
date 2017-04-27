@@ -33,6 +33,7 @@ class StructuredDataProducer(
       if (i % 100 == 0) {
         eventHubsClient.sendSync(buffer.asJava)
         buffer.clear()
+        println(s"send message $i")
       }
     }
   }
