@@ -36,6 +36,7 @@ class StructuredDataProducer(
         println(s"send message $i")
       }
     }
+    eventHubsClient.closeSync()
   }
 }
 
@@ -50,7 +51,6 @@ object StructuredDataProducer {
     val eventLength = args(5).toInt
 
     val creationTime = System.currentTimeMillis()
-
     val producer = new StructuredDataProducer(policyName, policyKey, eventHubNamespace, eventHubName,
       creationTime, eventLength, sendCount)
     producer.run()
