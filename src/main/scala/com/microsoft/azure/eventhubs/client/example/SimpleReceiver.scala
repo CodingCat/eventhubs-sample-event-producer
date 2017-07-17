@@ -22,7 +22,7 @@ object SimpleReceiver {
       val eventDatas = receiver.receiveSync(1)
       eventDatas.asScala.foreach(eventData =>
         println(
-          s"${eventData.getSystemProperties.getEnqueuedTime}," +
+          s"${eventData.getSystemProperties.getEnqueuedTime.getEpochSecond}," +
             s" ${eventData.getSystemProperties.getOffset}, ${eventData.getSystemProperties.getSequenceNumber}"))
     }
 
